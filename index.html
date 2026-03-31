@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVL Tree Visualizer</title>
+    <!-- Modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="src/index.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>AVL Tree <span>Visualizer</span></h1>
+            <p>An interactive, self-balancing binary search tree.</p>
+        </header>
+
+        <div class="controls glass-panel">
+            <div class="input-group">
+                <input type="number" id="node-value" placeholder="Enter a number" />
+            </div>
+            <div class="btn-group">
+                <button id="btn-insert" class="btn primary">Insert Node</button>
+                <button id="btn-delete" class="btn secondary">Delete Node</button>
+                <button id="btn-clear" class="btn danger">Clear Tree</button>
+            </div>
+            <div class="status-message" id="status-message">Ready.</div>
+        </div>
+
+        <div class="tree-container" id="tree-container">
+            <svg id="tree-svg"></svg>
+            <div id="tree-nodes"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="src/avlTree.js" defer></script>
+    <script src="src/renderer.js" defer></script>
+    <script src="src/main.js" defer></script>
+</body>
+</html>
