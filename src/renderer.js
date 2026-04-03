@@ -125,6 +125,8 @@ class TreeRenderer {
             // Move node to new designated position smoothly via CSS transitions
             domNode.style.left = `${pos.x}px`;
             domNode.style.top = `${pos.y}px`;
+            domNode.innerText = node.value;
+            domNode.title = `Value: ${node.value} | Height: ${node.height}`;
             
             // Remove 'new-node' class after animation
             setTimeout(() => domNode.classList.remove('new-node'), 500);

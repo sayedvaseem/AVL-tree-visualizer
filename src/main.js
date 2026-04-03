@@ -38,39 +38,65 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     };
 
-    const handleInsert = () => {
+    let isAnimating = false;
+
+    const setAnimating = (state) => {
+        isAnimating = state;
+        btnInsert.disabled = state;
+        btnDelete.disabled = state;
+        btnClear.disabled = state;
+        valueInput.disabled = state;
+    };
+
+    const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+    tree.onAction = async () => {
+        updateTree();
+        await sleep(1200); // Wait for transition
+    };
+
+    const handleInsert = async () => {
+        if (isAnimating) return;
         const val = parseInt(valueInput.value, 10);
         if (isNaN(val)) {
             showMessage('Please enter a valid number.', true);
             return;
         }
         
-        // Prevent duplicate insertion logic just as safety net
-        // (the core logic already ignores dupes, but good for UI text)
-        tree.insert(val);
+        setAnimating(true);
+        valueInput.value = '';
+        showMessage(`Inserting ${val}...`);
+        
+        await tree.insert(val);
         updateTree();
         
         showMessage(`Inserted ${val} into the tree.`);
-        valueInput.value = '';
+        setAnimating(false);
         valueInput.focus();
     };
 
-    const handleDelete = () => {
+    const handleDelete = async () => {
+        if (isAnimating) return;
         const val = parseInt(valueInput.value, 10);
         if (isNaN(val)) {
             showMessage('Please enter a valid number to delete.', true);
             return;
         }
 
-        tree.delete(val);
+        setAnimating(true);
+        valueInput.value = '';
+        showMessage(`Deleting ${val}...`);
+
+        await tree.delete(val);
         updateTree();
         
         showMessage(`Deleted ${val} from the tree.`);
-        valueInput.value = '';
+        setAnimating(false);
         valueInput.focus();
     };
 
     const handleClear = () => {
+        if (isAnimating) return;
         tree.root = null;
         updateTree();
         showMessage('Tree cleared.');

@@ -28,7 +28,7 @@ class AVLTree {
         }
     }
 
-    rightRotate(y) {
+    async rightRotate(y) {
         let x = y.left;
         let T2 = x.right;
 
@@ -43,7 +43,7 @@ class AVLTree {
         return x; // New root
     }
 
-    leftRotate(x) {
+    async leftRotate(x) {
         let y = x.right;
         let T2 = y.left;
 
@@ -58,38 +58,50 @@ class AVLTree {
         return y; // New root
     }
 
-    insert(value) {
-        this.root = this._insert(this.root, value);
+    async insert(value) {
+        if (!this.root) {
+            this.root = new AVLNode(value);
+            if (this.onAction) await this.onAction();
+            return;
+        }
+        this.root = await this._insert(this.root, value);
+        if (this.onAction) await this.onAction();
     }
 
-    _insert(node, value) {
+    async _insert(node, value) {
         // Normal BST Insert
         if (!node) {
             return new AVLNode(value);
         }
 
         if (value < node.value) {
-            node.left = this._insert(node.left, value);
+            node.left = await this._insert(node.left, value);
+            if (this.onAction) await this.onAction();
         } else if (value > node.value) {
-            node.right = this._insert(node.right, value);
+            node.right = await this._insert(node.right, value);
+            if (this.onAction) await this.onAction();
         } else {
             return node; // Duplicate values not allowed in this simple version
         }
 
-        return this._rebalance(node);
+        return await this._rebalance(node);
     }
 
-    delete(value) {
-        this.root = this._delete(this.root, value);
+    async delete(value) {
+        if (!this.root) return;
+        this.root = await this._delete(this.root, value);
+        if (this.onAction) await this.onAction();
     }
 
-    _delete(node, value) {
+    async _delete(node, value) {
         if (!node) return node;
 
         if (value < node.value) {
-            node.left = this._delete(node.left, value);
+            node.left = await this._delete(node.left, value);
+            if (this.onAction) await this.onAction();
         } else if (value > node.value) {
-            node.right = this._delete(node.right, value);
+            node.right = await this._delete(node.right, value);
+            if (this.onAction) await this.onAction();
         } else {
             // Node to delete found
 
@@ -105,22 +117,24 @@ class AVLTree {
                     // One child case
                     node = temp;
                 }
+                if (this.onAction) await this.onAction();
             } else {
                 // Node with two children: Get the inorder successor (smallest in the right subtree)
                 let temp = this._minValueNode(node.right);
 
                 // Copy the inorder successor's data to this node
                 node.value = temp.value;
+                if (this.onAction) await this.onAction();
 
                 // Delete the inorder successor
-                node.right = this._delete(node.right, temp.value);
+                node.right = await this._delete(node.right, temp.value);
+                if (this.onAction) await this.onAction();
             }
         }
 
-        // If the tree had only one node then return
         if (!node) return node;
 
-        return this._rebalance(node);
+        return await this._rebalance(node);
     }
 
     _minValueNode(node) {
@@ -131,30 +145,32 @@ class AVLTree {
         return current;
     }
 
-    _rebalance(node) {
+    async _rebalance(node) {
         this.updateHeight(node);
         let balance = this.getBalanceFactor(node);
 
         // Left Left Case
         if (balance > 1 && this.getBalanceFactor(node.left) >= 0) {
-            return this.rightRotate(node);
+            return await this.rightRotate(node);
         }
 
         // Left Right Case
         if (balance > 1 && this.getBalanceFactor(node.left) < 0) {
-            node.left = this.leftRotate(node.left);
-            return this.rightRotate(node);
+            node.left = await this.leftRotate(node.left);
+            if (this.onAction) await this.onAction();
+            return await this.rightRotate(node);
         }
 
         // Right Right Case
         if (balance < -1 && this.getBalanceFactor(node.right) <= 0) {
-            return this.leftRotate(node);
+            return await this.leftRotate(node);
         }
 
         // Right Left Case
         if (balance < -1 && this.getBalanceFactor(node.right) > 0) {
-            node.right = this.rightRotate(node.right);
-            return this.leftRotate(node);
+            node.right = await this.rightRotate(node.right);
+            if (this.onAction) await this.onAction();
+            return await this.leftRotate(node);
         }
 
         return node;

@@ -16,7 +16,7 @@
     --node-bg-del: linear-gradient(135deg, #f43f5e, #e11d48);
     --node-shadow: 0 4px 15px rgba(59, 130, 246, 0.5);
     
-    --transition-speed: 0.5s;
+    --transition-speed: 1.0s;
     --node-size: 50px;
 }
 
@@ -32,7 +32,7 @@ body {
     color: var(--text-primary);
     min-height: 100vh;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     overflow-x: hidden;
 }
 
@@ -46,7 +46,7 @@ body {
 }
 
 header {
-    text-align: center;
+    text-align: left;
     margin-bottom: 1rem;
     animation: fadeInDown 1s ease-out;
 }
@@ -84,7 +84,7 @@ header p {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 1rem;
     animation: fadeInUp 1s ease-out;
 }
@@ -157,7 +157,7 @@ header p {
 
 .status-message {
     width: 100%;
-    text-align: center;
+    text-align: left;
     margin-top: 0.5rem;
     font-size: 0.9rem;
     color: var(--text-secondary);
