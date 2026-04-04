@@ -9,31 +9,38 @@
     <link rel="stylesheet" href="src/index.css">
 </head>
 <body>
+    <canvas id="bg-canvas"></canvas>
     <div class="app-container">
-        <header>
-            <h1>AVL Tree <span>Visualizer</span></h1>
-            <p>An interactive, self-balancing binary search tree.</p>
-        </header>
+        <div class="sidebar glass-panel">
+            <header>
+                <h1>AVL Tree<br><span>Visualizer</span></h1>
+                <p>An interactive, self-balancing binary search tree.</p>
+            </header>
 
-        <div class="controls glass-panel">
-            <div class="input-group">
-                <input type="number" id="node-value" placeholder="Enter a number" />
+            <div class="controls">
+                <div class="input-group">
+                    <input type="number" id="node-value" placeholder="Enter a number" />
+                </div>
+                <div class="btn-group">
+                    <button id="btn-insert" class="btn primary">Insert Node</button>
+                    <button id="btn-delete" class="btn secondary">Delete Node</button>
+                    <button id="btn-clear" class="btn danger">Clear Tree</button>
+                </div>
+                <div class="status-message" id="status-message">Ready.</div>
             </div>
-            <div class="btn-group">
-                <button id="btn-insert" class="btn primary">Insert Node</button>
-                <button id="btn-delete" class="btn secondary">Delete Node</button>
-                <button id="btn-clear" class="btn danger">Clear Tree</button>
-            </div>
-            <div class="status-message" id="status-message">Ready.</div>
         </div>
 
-        <div class="tree-container" id="tree-container">
-            <svg id="tree-svg"></svg>
-            <div id="tree-nodes"></div>
+        <div class="main-content">
+            <div class="tree-container" id="tree-container">
+                <svg id="tree-svg"></svg>
+                <div id="tree-nodes"></div>
+            </div>
         </div>
     </div>
 
     <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="src/background3D.js" defer></script>
     <script src="src/avlTree.js" defer></script>
     <script src="src/renderer.js" defer></script>
     <script src="src/main.js" defer></script>
